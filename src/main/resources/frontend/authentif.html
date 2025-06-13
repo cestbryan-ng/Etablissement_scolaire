@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Réservations Enseignants</title>
+    <link rel="stylesheet" href="authentif.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Etablissement Scolaire</h1>
+            <p>Plateforme de gestion d'Etablissement scolaire</p>
+        </div>
+
+        <div class="login-content">
+            <div class="student-section">
+                <div class="student-card">
+                    <div class="student-icon">👨‍🎓</div>
+                    <h2>Espace Étudiants</h2>
+                    <p>Consultez les plannings des salles et des cours en temps réel</p>
+                    <button class="student-button" onclick="consulterPlanningEtudiant()">
+                        Consulter le planning
+                    </button>
+                </div>
+            </div>
+
+            <div class="login-card">
+                <div class="login-form-header">
+                    <h2>Connexion</h2>
+                    <p>Connectez-vous à votre compte enseignant</p>
+                </div>
+
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Adresse email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+
+                    <button type="submit" class="login-button">
+                        <span class="button-text">Se connecter</span>
+                        <div class="loading-spinner" id="loadingSpinner"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="authentif.js"></script>
+</body>
+</html>

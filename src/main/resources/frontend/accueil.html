@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservations Enseignants</title>
+    <link rel="stylesheet" href="accueil.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Etablissement Scolaire</h1>
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <span>Nom enseignant</span>
+            <button onclick="logout()" style="
+                background: rgba(255,255,255,0.2);
+                border: 1px solid rgba(255,255,255,0.3);
+                color: white;
+                padding: 8px 15px;
+                border-radius: 5px;
+                margin-left: 15px;
+                cursor: pointer;
+                font-size: 12px;
+            ">Déconnexion</button>
+        </div>
+    </header>
+
+    <section class="welcome-section">
+        <h2>Bienvenue sur votre espace en tant que enseignant</h2>
+        <p>Simplifiez la gestion de vos cours : réservez une salle ou du matériel, consultez les plannings, et accédez à votre récapitulatif en un clic.</p>
+    </section>
+
+    <main class="main-content">
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-image-container">
+                    <img src="images/salle_classe.png" alt="Réserver une salle" class="service-image">
+                </div>
+                <div class="service-content">
+                    <h3>Réserver une salle</h3>
+                    <p>Choisissez la salle adaptée à vos besoins et réservez-la selon vos horaires de cours.</p>
+                    <button class="service-button" onclick="reserverSalle()">Réserver une salle</button>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-image-container">
+                    <img src="images/location-materiel-.jpeg" alt="Réserver du matériel" class="service-image">
+                </div>
+                <div class="service-content">
+                    <h3>Réserver du matériel</h3>
+                    <p>Empruntez un ordinateur ou un vidéo-projecteur pour garantir le bon déroulement de votre séance.</p>
+                    <button class="service-button" onclick="reserverMateriel()">Réserver du matériel</button>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-image-container">
+                    <img src="images/Comment-planifier-son-travail.jpg" alt="Consulter le planning" class="service-image">
+                </div>
+                <div class="service-content">
+                    <h3>Consulter le planning</h3>
+                    <p>Visualisez la disponibilité des salles et des matériels sur la période de votre choix.</p>
+                    <button class="service-button" onclick="consulterPlanning()">Voir le planning</button>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-image-container">
+                    <img src="images/V1_ReCap_440x290.jpg" alt="Mon récapitulatif" class="service-image">
+                </div>
+                <div class="service-content">
+                    <h3>Mon récapitulatif</h3>
+                    <p>Consultez facilement l'ensemble de vos réservations et votre emploi du temps.</p>
+                    <button class="service-button" onclick="voirRecapitulatif()">Mon récapitulatif</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="accueil.js"></script>
+</body>
+</html>

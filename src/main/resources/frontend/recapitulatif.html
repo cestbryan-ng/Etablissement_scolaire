@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Récapitulatif horaire - Réservations Enseignants</title>
+    <link rel="stylesheet" href="recapitulatif.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Etablissement Scolaire</h1>
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <span>Nom enseignant</span>
+            <button onclick="logout()" class="logout-btn">Déconnexion</button>
+        </div>
+    </header>
+
+    <section class="welcome-section">
+        <div class="welcome-header">
+            <button onclick="retourAccueil()" class="back-button">← Retour</button>
+            <div class="welcome-content">
+                <h2>Récapitulatif horaire</h2>
+                <p>Consultez votre récapitulatif horaire sur une période donnée</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="filters-section">
+            <div class="filters-card">
+                <h3>Période de consultation</h3>
+                <div class="date-filters">
+                    <div class="date-group">
+                        <label for="dateDebut">Date de début :</label>
+                        <input type="text" id="dateDebut" placeholder="jj/mm/aaaa" maxlength="10">
+                        <span class="date-help">Format : jj/mm/aaaa</span>
+                    </div>
+                    
+                    <div class="date-group">
+                        <label for="dateFin">Date de fin :</label>
+                        <input type="text" id="dateFin" placeholder="jj/mm/aaaa" maxlength="10">
+                        <span class="date-help">Format : jj/mm/aaaa</span>
+                    </div>
+                </div>
+                
+                <button class="consult-button" onclick="consulterRecapitulatif()">
+                    <span class="button-text">Consulter mon récapitulatif horaire</span>
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                </button>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <div class="results-card">
+                <h3>Récapitulatif horaire</h3>
+                <div class="period-info" id="periodInfo"></div>
+                
+                <div class="table-container">
+                    <table class="recap-table" id="recapTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Salle</th>
+                                <th>Début</th>
+                                <th>Fin</th>
+                                <th>Durée</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Les lignes seront ajoutées dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="summary-section">
+                    <div class="summary-card">
+                        <div class="summary-item">
+                            <span class="summary-label">Nombre de réservations :</span>
+                            <span class="summary-value" id="totalReservations">0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Total des heures :</span>
+                            <span class="summary-value" id="totalHeures">0h00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <div class="no-results-card">
+                <div class="no-results-icon">📅</div>
+                <h3>Aucune réservation trouvée</h3>
+                <p>Aucune réservation n'a été trouvée pour la période sélectionnée.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="recapitulatif.js"></script>
+</body>
+</html>

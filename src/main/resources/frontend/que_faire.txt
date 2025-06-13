@@ -1,0 +1,14 @@
+QUE FAIRE : -----------------
+
+-Executer le fichier req.sql qui contient la bd du projet
+
+- Pour run, ouvrez le navigateur et ouvrez le fichier authentif.html 
+dans un navigateur
+<<<<./chemin/vers/le/fichier/authentif.html>>>>>
+
+- Le travail à faire de chacun est de juste ajouter son cas d'utilisation
+dans le fichier, et le code des classes api spring boot dans le fichier api.txt
+situé à la racine du projet, vous aurez juste à créer vos fichiers html, css et js 
+et ecrire le code sourtout n'oubliez pas !!! faites votre cas avec un IdEnseignant fixe,
+dans le fichier accueil.js, vous trouverez une instruction permettant de charger
+vos pages, vous aurez juste à modifier le nom .html que vous y trouverez.

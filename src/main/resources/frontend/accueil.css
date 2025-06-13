@@ -1,0 +1,258 @@
+/* Réinitialisation CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* Header */
+.header {
+    background-color: #4a6b7c;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-avatar::before {
+    content: "👤";
+    font-size: 16px;
+}
+
+/* Section d'accueil */
+.welcome-section {
+    background-color: #5d7a88;
+    color: white;
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.welcome-section h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-weight: normal;
+}
+
+.welcome-section p {
+    font-size: 16px;
+    opacity: 0.9;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Contenu principal */
+.main-content {
+    padding: 60px 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.service-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 0;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #5d7a88, #4a6b7c);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    z-index: 2;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.service-card:hover::before {
+    transform: scaleX(1);
+}
+
+.service-image-container {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 15px 15px 0 0;
+}
+
+.service-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-image {
+    transform: scale(1.05);
+}
+
+.service-content {
+    padding: 25px 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.service-content h3 {
+    color: #5d7a88;
+    font-size: 18px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.service-content p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.service-button {
+    background-color: #5d7a88;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(93, 122, 136, 0.3);
+}
+
+.service-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.service-button:hover {
+    background-color: #4a6b7c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(93, 122, 136, 0.4);
+}
+
+.service-button:hover::before {
+    left: 100%;
+}
+
+.service-button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 5px rgba(93, 122, 136, 0.3);
+    background-color: #3a5a6b;
+    transition: all 0.1s ease;
+}
+
+.service-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(93, 122, 136, 0.3);
+}
+
+/* Suppression des anciens styles d'icônes */
+
+/* Suppression des styles dupliqués */
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header {
+        padding: 15px 20px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .welcome-section {
+        padding: 30px 20px;
+    }
+
+    .welcome-section h2 {
+        font-size: 24px;
+    }
+
+    .main-content {
+        padding: 40px 20px;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .service-image-container {
+        height: 150px;
+    }
+
+    .service-content {
+        padding: 20px 15px;
+    }
+
+    .service-content h3 {
+        font-size: 16px;
+    }
+
+    .service-content p {
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+}
