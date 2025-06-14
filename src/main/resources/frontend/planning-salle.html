@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning de salle - Réservations Enseignants</title>
+    <link rel="stylesheet" href="planning-salle.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Etablissement Scolaire</h1>
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <span>Nom enseignant</span>
+            <button onclick="logout()" class="logout-btn">Déconnexion</button>
+        </div>
+    </header>
+
+    <section class="welcome-section">
+        <div class="welcome-header">
+            <button onclick="retourAccueil()" class="back-button">← Retour</button>
+            <div class="welcome-content">
+                <h2>Consulter le planning d'une salle</h2>
+                <p>Vérifiez la disponibilité d'une salle pour un jour donné</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <!-- Section de recherche -->
+        <div class="search-section">
+            <div class="search-card">
+                <h3>Rechercher le planning</h3>
+                <div class="search-form">
+                    <div class="form-group">
+                        <label for="numeroSalle">Numéro de la salle :</label>
+                        <input type="text" id="numeroSalle" placeholder="Ex: A101, B205..." required>
+                        <span class="field-help">Saisissez le numéro de la salle à consulter</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="jourConsultation">Jour de consultation :</label>
+                        <input type="text" id="jourConsultation" placeholder="jj/mm/aaaa" maxlength="10" required>
+                        <span class="field-help">Format : jj/mm/aaaa</span>
+                    </div>
+                </div>
+                
+                <button class="search-button" onclick="rechercherPlanning()">
+                    <span class="button-text">Rechercher</span>
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Section des résultats -->
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <div class="results-card">
+                <h3>Planning de la salle <span id="salleInfo"></span></h3>
+                <div class="date-info" id="dateInfo"></div>
+                
+                <div class="planning-container">
+                    <table class="planning-table" id="planningTable">
+                        <thead>
+                            <tr>
+                                <th>Heure</th>
+                                <th>Statut</th>
+                                <th>Enseignant</th>
+                                <th>Détails</th>
+                            </tr>
+                        </thead>
+                        <tbody id="planningBody">
+                            <!-- Les lignes seront ajoutées dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="summary-info">
+                    <div class="summary-item">
+                        <span class="summary-label">Créneaux occupés :</span>
+                        <span class="summary-value" id="creneauxOccupes">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Créneaux libres :</span>
+                        <span class="summary-value" id="creneauxLibres">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section aucune réservation -->
+        <div class="no-reservation" id="noReservation" style="display: none;">
+            <div class="no-reservation-card">
+                <div class="no-reservation-icon">🏛️</div>
+                <h3>Salle non réservée</h3>
+                <p>La salle <span id="salleNonReservee"></span> n'a aucune réservation pour le <span id="dateNonReservee"></span>.</p>
+                <p class="disponibilite-info">Cette salle est entièrement disponible pour ce jour.</p>
+            </div>
+        </div>
+
+        <!-- Section salle inexistante -->
+        <div class="salle-inexistante" id="salleInexistante" style="display: none;">
+            <div class="salle-inexistante-card">
+                <div class="error-icon">❌</div>
+                <h3>Salle inexistante</h3>
+                <p>La salle <span id="salleErreur"></span> n'existe pas dans le système.</p>
+                <p class="suggestion">Vérifiez le numéro de salle et réessayez.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="planning-salle.js"></script>
+</body>
+</html>

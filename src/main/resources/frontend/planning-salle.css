@@ -1,0 +1,499 @@
+/* Réinitialisation CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* Header */
+.header {
+    background-color: #4a6b7c;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-avatar::before {
+    content: "👤";
+    font-size: 16px;
+}
+
+.logout-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Section d'accueil */
+.welcome-section {
+    background-color: #5d7a88;
+    color: white;
+    padding: 40px 30px;
+}
+
+.welcome-header {
+    position: relative;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.back-button {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.welcome-content h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-weight: normal;
+}
+
+.welcome-content p {
+    font-size: 16px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Contenu principal */
+.main-content {
+    padding: 40px 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Section de recherche */
+.search-section {
+    margin-bottom: 30px;
+}
+
+.search-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.search-card h3 {
+    color: #5d7a88;
+    font-size: 20px;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.search-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    color: #5d7a88;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #f9f9f9;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #5d7a88;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(93, 122, 136, 0.1);
+}
+
+.form-group input.error {
+    border-color: #f44336;
+    background-color: #ffebee;
+}
+
+.field-help {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Bouton de recherche */
+.search-button {
+    background-color: #5d7a88;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    width: 100%;
+}
+
+.search-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.search-button:hover {
+    background-color: #4a6b7c;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(93, 122, 136, 0.4);
+}
+
+.search-button:hover::before {
+    left: 100%;
+}
+
+.search-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Animation de chargement */
+.loading-spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+.search-button.loading .button-text {
+    opacity: 0.7;
+}
+
+.search-button.loading .loading-spinner {
+    display: block;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Section des résultats */
+.results-section, .no-reservation, .salle-inexistante {
+    margin-top: 30px;
+}
+
+.results-card, .no-reservation-card, .salle-inexistante-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.results-card h3 {
+    color: #5d7a88;
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.date-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-size: 14px;
+    color: #666;
+    border-left: 4px solid #5d7a88;
+}
+
+/* Tableau planning */
+.planning-container {
+    overflow-x: auto;
+    margin-bottom: 25px;
+}
+
+.planning-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.planning-table th {
+    background-color: #5d7a88;
+    color: white;
+    padding: 15px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.planning-table th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.planning-table th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.planning-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.planning-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.planning-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Statuts */
+.status-occupe {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.status-libre {
+    background-color: #e8f5e8;
+    color: #2e7d32;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+/* Résumé */
+.summary-info {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    background: linear-gradient(135deg, #5d7a88, #4a6b7c);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.summary-item {
+    text-align: center;
+}
+
+.summary-label {
+    display: block;
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 5px;
+}
+
+.summary-value {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Salle non réservée */
+.no-reservation-card {
+    text-align: center;
+    padding: 50px 30px;
+}
+
+.no-reservation-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.no-reservation-card h3 {
+    color: #5d7a88;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.no-reservation-card p {
+    color: #666;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.disponibilite-info {
+    color: #2e7d32;
+    font-weight: 600;
+    background: #e8f5e8;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+/* Salle inexistante */
+.salle-inexistante-card {
+    text-align: center;
+    padding: 50px 30px;
+}
+
+.error-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.salle-inexistante-card h3 {
+    color: #d32f2f;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.salle-inexistante-card p {
+    color: #666;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.suggestion {
+    color: #1976d2;
+    font-weight: 600;
+    background: #e3f2fd;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header {
+        padding: 15px 20px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .welcome-section {
+        padding: 30px 20px;
+    }
+
+    .welcome-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .back-button {
+        position: static;
+        transform: none;
+        align-self: flex-start;
+        margin: 0 auto;
+    }
+
+    .welcome-content h2 {
+        font-size: 24px;
+    }
+
+    .main-content {
+        padding: 30px 20px;
+    }
+
+    .search-form {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .search-card, .results-card {
+        padding: 20px;
+    }
+
+    .summary-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .planning-table {
+        font-size: 12px;
+    }
+
+    .planning-table th,
+    .planning-table td {
+        padding: 8px;
+    }
+}

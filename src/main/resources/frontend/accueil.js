@@ -1,17 +1,20 @@
+// Script pour la page d'accueil avec informations utilisateur
+
+// Fonctions pour les boutons de navigation
 function reserverSalle() {
-    window.location.href = '/reservation-salle';
+    window.location.href = '/reservation-salle.html';
 }
 
 function reserverMateriel() {
-    window.location.href = '/reservation-materiel';
+    window.location.href = '/reservation-materiel.html';
 }
 
 function consulterPlanning() {
-    window.location.href = '/planning';
+    window.location.href = '/planning-salle.html';
 }
 
 function voirRecapitulatif() {
-    window.location.href = 'recapitulatif.html';
+    window.location.href = '/recapitulatif.html';
 }
 
 // Fonction de déconnexion
@@ -23,13 +26,15 @@ function logout() {
             'X-Requested-With': 'XMLHttpRequest'
         }
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
         if (data.success) {
             window.location.href = '/';
         }
     })
-    .catch(error => {
+    .catch(function(error) {
         console.error('Erreur lors de la déconnexion:', error);
         window.location.href = '/';
     });
@@ -43,8 +48,10 @@ document.addEventListener('DOMContentLoaded', function() {
             'X-Requested-With': 'XMLHttpRequest'
         }
     })
-    .then(response => response.json())
-    .then(data => {
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
         if (!data.success) {
             // Utilisateur non connecté, redirection
             window.location.href = '/';
@@ -53,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateUserInfo(data);
         }
     })
-    .catch(error => {
+    .catch(function(error) {
         console.error('Erreur:', error);
         window.location.href = '/';
     });

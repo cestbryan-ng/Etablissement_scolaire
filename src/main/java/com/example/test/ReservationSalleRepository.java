@@ -19,6 +19,12 @@ public interface ReservationSalleRepository extends JpaRepository<ReservationSal
             @Param("dateDebut") LocalDate dateDebut,
             @Param("dateFin") LocalDate dateFin
     );
+    // Nouvelle méthode pour le planning d'une salle
+    @Query("SELECT r FROM ReservationSalle r WHERE r.nSalle = :nSalle AND r.jour = :jour ORDER BY r.debut ASC")
+    List<ReservationSalle> findByNSalleAndJour(
+            @Param("nSalle") String nSalle,
+            @Param("jour") LocalDate jour
+    );
 
     // Trouver toutes les réservations d'un enseignant
     List<ReservationSalle> findByMatriculeOrderByJourDescDebutDesc(String matricule);
