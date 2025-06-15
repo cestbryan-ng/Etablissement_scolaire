@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réserver une salle - Réservations Enseignants</title>
+    <link rel="stylesheet" href="reservation-salle.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Etablissement Scolaire</h1>
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <span>Nom enseignant</span>
+            <button onclick="logout()" class="logout-btn">Déconnexion</button>
+        </div>
+    </header>
+
+    <section class="welcome-section">
+        <div class="welcome-header">
+            <button onclick="retourAccueil()" class="back-button">← Retour</button>
+            <div class="welcome-content">
+                <h2>Réserver une salle</h2>
+                <p>Trouvez et réservez la salle adaptée à vos besoins</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <!-- Étape 1: Critères de recherche -->
+        <div class="step-section" id="step1">
+            <div class="step-card">
+                <div class="step-header">
+                    <h3><span class="step-number">1</span>Critères de recherche</h3>
+                    <p>Définissez vos besoins pour trouver les salles disponibles</p>
+                </div>
+                
+                <div class="search-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dateReservation">Date de réservation :</label>
+                            <input type="text" id="dateReservation" placeholder="jj/mm/aaaa" maxlength="10" required>
+                            <span class="field-help">Format : jj/mm/aaaa</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="nombrePlaces">Nombre de places minimum :</label>
+                            <input type="number" id="nombrePlaces" placeholder="Ex: 30" min="1" max="100" required>
+                            <span class="field-help">Capacité minimale requise</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="heureDebut">Heure de début :</label>
+                            <input type="text" id="heureDebut" placeholder="HH:mm" maxlength="5" required>
+                            <span class="field-help">Format : HH:mm (ex: 08:00)</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="heureFin">Heure de fin :</label>
+                            <input type="text" id="heureFin" placeholder="HH:mm" maxlength="5" required>
+                            <span class="field-help">Format : HH:mm (ex: 10:00)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="search-button" onclick="rechercherSalles()">
+                    <span class="button-text">Rechercher les salles disponibles</span>
+                    <div class="loading-spinner" id="loadingSpinner1"></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Étape 2: Sélection de salle -->
+        <div class="step-section" id="step2" style="display: none;">
+            <div class="step-card">
+                <div class="step-header">
+                    <h3><span class="step-number">2</span>Sélection de la salle</h3>
+                    <p id="criteresInfo">Choisissez une salle parmi celles disponibles</p>
+                </div>
+                
+                <div class="salles-grid" id="sallesGrid">
+                    <!-- Les cartes de salles seront ajoutées dynamiquement -->
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="secondary-button" onclick="retourRecherche()">
+                        ← Modifier la recherche
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Étape 3: Confirmation -->
+        <div class="step-section" id="step3" style="display: none;">
+            <div class="step-card">
+                <div class="step-header">
+                    <h3><span class="step-number">3</span>Confirmation de réservation</h3>
+                    <p>Vérifiez les détails avant de confirmer</p>
+                </div>
+                
+                <div class="confirmation-details" id="confirmationDetails">
+                    <!-- Les détails seront ajoutés dynamiquement -->
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="secondary-button" onclick="retourSelection()">
+                        ← Changer de salle
+                    </button>
+                    <button class="confirm-button" onclick="confirmerReservation()">
+                        <span class="button-text">Confirmer la réservation</span>
+                        <div class="loading-spinner" id="loadingSpinner3"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section de succès -->
+        <div class="step-section" id="success" style="display: none;">
+            <div class="success-card">
+                <div class="success-icon">✅</div>
+                <h3>Réservation confirmée !</h3>
+                <div class="success-details" id="successDetails">
+                    <!-- Les détails seront ajoutés dynamiquement -->
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="primary-button" onclick="nouvelleReservation()">
+                        Nouvelle réservation
+                    </button>
+                    <button class="secondary-button" onclick="retourAccueil()">
+                        Retour à l'accueil
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section aucune salle -->
+        <div class="step-section" id="noSalles" style="display: none;">
+            <div class="no-results-card">
+                <div class="no-results-icon">🏛️</div>
+                <h3>Aucune salle disponible</h3>
+                <p id="noSallesMessage">Aucune salle ne correspond à vos critères pour cette période.</p>
+                
+                <div class="suggestions">
+                    <h4>Suggestions :</h4>
+                    <ul>
+                        <li>Essayez avec un nombre de places plus petit</li>
+                        <li>Choisissez une autre période</li>
+                        <li>Vérifiez la disponibilité à d'autres créneaux</li>
+                    </ul>
+                </div>
+                
+                <button class="primary-button" onclick="retourRecherche()">
+                    ← Modifier la recherche
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script src="reservation-salle.js"></script>
+</body>
+</html>

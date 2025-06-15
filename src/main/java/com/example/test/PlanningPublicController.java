@@ -1,22 +1,20 @@
 package com.example.test;
 
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/planning")
+@RequestMapping("/api/public/planning")
 @CrossOrigin(origins = "*")
-public class PlanningSalleController {
+public class PlanningPublicController {
 
     @Autowired
     private PlanningSalleService planningSalleService;
 
     @PostMapping("/salle")
-    public ResponseEntity<PlanningResponse> consulterPlanningSalle(
-            @RequestBody PlanningRequest request,
-            HttpSession session) {
+    public ResponseEntity<PlanningResponse> consulterPlanningSallePublic(
+            @RequestBody PlanningRequest request) {
 
         try {
             // Validation des paramètres
@@ -28,8 +26,8 @@ public class PlanningSalleController {
                 return ResponseEntity.ok(new PlanningResponse(false, "Jour de consultation requis"));
             }
 
-            // ACCÈS PUBLIC AUTORISÉ - Pas de vérification de session
-            // Cette fonctionnalité est accessible aux étudiants sans connexion
+            // ENDPOINT PUBLIC - Aucune vérification de session requise
+            System.out.println("🌍 Accès public au planning - Salle: " + request.getNumeroSalle() + ", Date: " + request.getJourConsultation());
 
             // Appeler le service
             PlanningResponse response = planningSalleService.consulterPlanningSalle(request);
@@ -37,9 +35,15 @@ public class PlanningSalleController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
+            System.err.println("❌ Erreur dans l'endpoint public: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.ok(new PlanningResponse(false, "Erreur serveur: " + e.getMessage()));
         }
     }
+
+    // Endpoint pour vérifier si l'API publique fonctionne
+    @GetMapping("/test")
+    public ResponseEntity<String> testPublic() {
+        return ResponseEntity.ok("✅ API publique accessible - Planning disponible pour consultation");
+    }
 }
-
-

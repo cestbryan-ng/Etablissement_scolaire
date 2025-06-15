@@ -17,6 +17,7 @@ function voirRecapitulatif() {
     window.location.href = '/recapitulatif.html';
 }
 
+
 // Fonction de déconnexion
 function logout() {
     fetch('/api/auth/logout', {

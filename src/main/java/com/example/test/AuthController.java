@@ -50,18 +50,24 @@ public class AuthController {
 
     @GetMapping("/user-info")
     public ResponseEntity<LoginResponse> getUserInfo(HttpSession session) {
-        Boolean isLoggedIn = (Boolean) session.getAttribute("isLoggedIn");
+        try {
+            Boolean isLoggedIn = (Boolean) session.getAttribute("isLoggedIn");
 
-        if (isLoggedIn != null && isLoggedIn) {
-            return ResponseEntity.ok(new LoginResponse(
-                    true,
-                    "Utilisateur connecté",
-                    (String) session.getAttribute("matricule"),
-                    (String) session.getAttribute("nom"),
-                    (String) session.getAttribute("grade")
-            ));
-        } else {
-            return ResponseEntity.ok(new LoginResponse(false, "Utilisateur non connecté"));
+            if (isLoggedIn != null && isLoggedIn) {
+                return ResponseEntity.ok(new LoginResponse(
+                        true,
+                        "Utilisateur connecté",
+                        (String) session.getAttribute("matricule"),
+                        (String) session.getAttribute("nom"),
+                        (String) session.getAttribute("grade")
+                ));
+            } else {
+                // ACCÈS PUBLIC : Retourner success=false sans erreur HTTP
+                return ResponseEntity.ok(new LoginResponse(false, "Utilisateur non connecté"));
+            }
+        } catch (Exception e) {
+            // En cas d'erreur, considérer comme non connecté (accès public)
+            return ResponseEntity.ok(new LoginResponse(false, "Session non disponible"));
         }
     }
 

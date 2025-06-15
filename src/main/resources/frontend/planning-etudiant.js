@@ -1,5 +1,6 @@
-// Variables globales
-let currentUser = null;
+// Page de planning pour étudiants - AUCUNE AUTHENTIFICATION REQUISE
+
+console.log('📚 Page planning étudiant chargée');
 
 // Fonction utilitaire pour afficher des messages
 function showMessage(message, type) {
@@ -36,11 +37,28 @@ function showMessage(message, type) {
 
 // Validation des champs
 function validateSearchForm() {
-    const numeroSalle = document.getElementById('numeroSalle').value.trim();
-    const jourConsultation = document.getElementById('jourConsultation').value.trim();
+    const numeroSalleInput = document.getElementById('numeroSalle');
+    const jourConsultationInput = document.getElementById('jourConsultation');
+    
+    const numeroSalle = numeroSalleInput.value.trim();
+    const jourConsultation = jourConsultationInput.value.trim();
+    
+    // Réinitialiser les styles d'erreur
+    numeroSalleInput.classList.remove('error');
+    jourConsultationInput.classList.remove('error');
     
     if (!numeroSalle || !jourConsultation) {
         showMessage('Veuillez remplir tous les champs', 'error');
+        if (!numeroSalle) numeroSalleInput.classList.add('error');
+        if (!jourConsultation) jourConsultationInput.classList.add('error');
+        return null;
+    }
+    
+    // Validation format date jj/mm/aaaa
+    const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+    if (!dateRegex.test(jourConsultation)) {
+        showMessage('Format de date incorrect. Utilisez jj/mm/aaaa', 'error');
+        jourConsultationInput.classList.add('error');
         return null;
     }
     
@@ -50,7 +68,15 @@ function validateSearchForm() {
     };
 }
 
-// Génération des créneaux horaires
+// Masquer toutes les sections de résultats
+function hideAllResultSections() {
+    document.getElementById('resultsSection').style.display = 'none';
+    document.getElementById('noReservation').style.display = 'none';
+    document.getElementById('salleInexistante').style.display = 'none';
+    document.getElementById('apiError').style.display = 'none';
+}
+
+// Génération des créneaux horaires de 8h à 18h
 function generateTimeSlots() {
     const slots = [];
     for (let hour = 8; hour < 18; hour++) {
@@ -65,13 +91,10 @@ function generateTimeSlots() {
     return slots;
 }
 
-// Affichage du planning avec réservations
+// Afficher le planning avec réservations
 function displayPlanningWithReservations(numeroSalle, jourConsultation, reservations) {
-    // Masquer autres sections
-    document.getElementById('noReservation').style.display = 'none';
-    document.getElementById('salleInexistante').style.display = 'none';
+    hideAllResultSections();
     
-    // Afficher résultats
     document.getElementById('resultsSection').style.display = 'block';
     document.getElementById('salleInfo').textContent = numeroSalle;
     document.getElementById('dateInfo').textContent = 'Planning du ' + jourConsultation;
@@ -83,14 +106,14 @@ function displayPlanningWithReservations(numeroSalle, jourConsultation, reservat
     let occupiedCount = 0;
     let freeCount = 0;
     
-    // Créer map des réservations
+    // Créer map des réservations par heure
     const reservationMap = {};
     reservations.forEach(function(reservation) {
         const startHour = reservation.debut.substring(0, 5);
         reservationMap[startHour] = reservation;
     });
     
-    // Générer les lignes
+    // Générer les lignes du tableau
     timeSlots.forEach(function(slot) {
         const row = document.createElement('tr');
         const reservation = reservationMap[slot.start];
@@ -118,29 +141,31 @@ function displayPlanningWithReservations(numeroSalle, jourConsultation, reservat
     document.getElementById('creneauxLibres').textContent = freeCount;
 }
 
-// Affichage salle non réservée
+// Afficher "Salle non réservée"
 function displaySalleNonReservee(numeroSalle, jourConsultation) {
-    document.getElementById('resultsSection').style.display = 'none';
-    document.getElementById('salleInexistante').style.display = 'none';
+    hideAllResultSections();
     document.getElementById('noReservation').style.display = 'block';
-    
     document.getElementById('salleNonReservee').textContent = numeroSalle;
     document.getElementById('dateNonReservee').textContent = jourConsultation;
 }
 
-// Affichage salle inexistante
+// Afficher "Salle inexistante"
 function displaySalleInexistante(numeroSalle) {
-    document.getElementById('resultsSection').style.display = 'none';
-    document.getElementById('noReservation').style.display = 'none';
+    hideAllResultSections();
     document.getElementById('salleInexistante').style.display = 'block';
-    
     document.getElementById('salleErreur').textContent = numeroSalle;
+}
+
+// Afficher erreur API
+function displayApiError() {
+    hideAllResultSections();
+    document.getElementById('apiError').style.display = 'block';
 }
 
 // Gestion du loading
 function setLoadingState(isLoading) {
     const button = document.querySelector('.search-button');
-    const buttonText = document.querySelector('.button-text');
+    const buttonText = button.querySelector('.button-text');
     
     if (isLoading) {
         button.disabled = true;
@@ -153,16 +178,17 @@ function setLoadingState(isLoading) {
     }
 }
 
-// Fonction principale de recherche
+// Fonction principale de recherche du planning
 function rechercherPlanning() {
-    console.log('Recherche planning...');
+    console.log('🔍 Recherche planning...');
     
     const validation = validateSearchForm();
     if (!validation) return;
     
     setLoadingState(true);
+    hideAllResultSections();
     
-    // Utiliser l'API publique
+    // Essayer d'abord l'API publique
     fetch('/api/public/planning/salle', {
         method: 'POST',
         headers: {
@@ -174,12 +200,14 @@ function rechercherPlanning() {
         })
     })
     .then(function(response) {
+        console.log('✅ Réponse API publique reçue, status:', response.status);
         if (!response.ok) {
-            throw new Error('Erreur HTTP: ' + response.status);
+            throw new Error('API_PUBLIC_ERROR');
         }
         return response.json();
     })
     .then(function(data) {
+        console.log('📊 Données reçues:', data);
         setLoadingState(false);
         
         if (data.success) {
@@ -198,58 +226,52 @@ function rechercherPlanning() {
         }
     })
     .catch(function(error) {
-        console.error('Erreur:', error);
-        setLoadingState(false);
-        showMessage('Erreur de connexion: ' + error.message, 'error');
+        console.warn('⚠️ API publique échouée, essai API standard...');
+        
+        // Si l'API publique échoue, essayer l'API standard
+        fetch('/api/planning/salle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                numeroSalle: validation.numeroSalle,
+                jourConsultation: validation.jourConsultation
+            })
+        })
+        .then(function(response) {
+            console.log('✅ Réponse API standard reçue, status:', response.status);
+            if (!response.ok) {
+                throw new Error('API_STANDARD_ERROR');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            console.log('📊 Données API standard reçues:', data);
+            setLoadingState(false);
+            
+            if (data.success) {
+                if (data.salleExiste === false) {
+                    displaySalleInexistante(validation.numeroSalle);
+                    showMessage('Salle inexistante', 'error');
+                } else if (data.reservations && data.reservations.length > 0) {
+                    displayPlanningWithReservations(validation.numeroSalle, validation.jourConsultation, data.reservations);
+                    showMessage('Planning chargé avec succès', 'success');
+                } else {
+                    displaySalleNonReservee(validation.numeroSalle, validation.jourConsultation);
+                    showMessage('Aucune réservation pour cette salle', 'info');
+                }
+            } else {
+                showMessage(data.message || 'Erreur lors de la récupération du planning', 'error');
+            }
+        })
+        .catch(function(error2) {
+            console.error('❌ Toutes les API ont échoué:', error2);
+            setLoadingState(false);
+            displayApiError();
+            showMessage('Service temporairement indisponible', 'error');
+        });
     });
-}
-
-// Configuration du mode public
-function setupModePublic() {
-    console.log('Mode public activé');
-    
-    // Afficher info étudiant
-    const infoEtudiant = document.getElementById('infoEtudiant');
-    if (infoEtudiant) {
-        infoEtudiant.style.display = 'block';
-    }
-    
-    // Modifier en-tête
-    const userInfo = document.querySelector('.user-info');
-    if (userInfo) {
-        userInfo.innerHTML = 
-            '<div class="user-avatar-student"></div>' +
-            '<span>Mode consultation étudiant</span>' +
-            '<button onclick="allerSeConnecter()" style="' +
-                'background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); ' +
-                'color: white; padding: 8px 15px; border-radius: 5px; margin-left: 15px; ' +
-                'cursor: pointer; font-size: 12px;">Se connecter</button>';
-    }
-    
-    // Modifier bouton retour
-    const backButton = document.querySelector('.back-button');
-    if (backButton) {
-        backButton.onclick = function() { 
-            window.location.href = '/authentif.html'; 
-        };
-        backButton.innerHTML = '← Retour à l\'accueil';
-    }
-    
-    // Modifier titre
-    const welcomeContent = document.querySelector('.welcome-content');
-    if (welcomeContent) {
-        welcomeContent.innerHTML = 
-            '<h2>Consulter le planning des salles</h2>' +
-            '<p>Consultez la disponibilité des salles en temps réel</p>';
-    }
-    
-    // CSS pour avatar étudiant
-    const style = document.createElement('style');
-    style.textContent = 
-        '.user-avatar-student { width: 32px; height: 32px; background-color: rgba(255, 255, 255, 0.2); ' +
-        'border-radius: 50%; display: flex; align-items: center; justify-content: center; } ' +
-        '.user-avatar-student::before { content: "👨‍🎓"; font-size: 16px; }';
-    document.head.appendChild(style);
 }
 
 // Fonctions de navigation
@@ -258,34 +280,7 @@ function allerSeConnecter() {
 }
 
 function retourAccueil() {
-    if (currentUser) {
-        window.location.href = '/accueil.html';
-    } else {
-        window.location.href = '/authentif.html';
-    }
-}
-
-function logout() {
-    if (!currentUser) {
-        window.location.href = '/authentif.html';
-        return;
-    }
-    
-    fetch('/api/auth/logout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(data) {
-        window.location.href = '/';
-    })
-    .catch(function(error) {
-        window.location.href = '/';
-    });
+    window.location.href = '/authentif.html';
 }
 
 // Formatage automatique de la date
@@ -304,47 +299,29 @@ function setupDateFormatting() {
         
         e.target.value = value;
     });
+    
+    // Supprimer les classes d'erreur lors de la modification
+    dateInput.addEventListener('input', function() {
+        dateInput.classList.remove('error');
+    });
+    
+    const salleInput = document.getElementById('numeroSalle');
+    salleInput.addEventListener('input', function() {
+        salleInput.classList.remove('error');
+    });
 }
 
 // Initialisation de la page
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Page planning chargée');
+    console.log('🎓 Page planning étudiant initialisée');
     
-    // Vérifier authentification (optionnel)
-    fetch('/api/auth/user-info')
-        .then(function(response) {
-            if (!response.ok) {
-                setupModePublic();
-                return null;
-            }
-            return response.json();
-        })
-        .then(function(data) {
-            if (!data || !data.success) {
-                setupModePublic();
-            } else {
-                // Mode enseignant
-                currentUser = {
-                    matricule: data.matricule,
-                    nom: data.nom,
-                    grade: data.grade
-                };
-                
-                const userNameElement = document.querySelector('.user-info span');
-                if (userNameElement) {
-                    userNameElement.textContent = data.nom + ' (' + data.grade + ')';
-                }
-            }
-        })
-        .catch(function() {
-            setupModePublic();
-        });
+    // Aucune vérification d'authentification - Page 100% publique
     
-    // Configuration
+    // Configuration du formatage automatique
     setupDateFormatting();
     
-    // Focus sur premier champ
+    // Mettre le focus sur le premier champ
     document.getElementById('numeroSalle').focus();
     
-    console.log('Initialisation terminée');
+    console.log('✅ Prêt pour consultation publique');
 });

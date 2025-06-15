@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réserver du matériel - Réservations Enseignants</title>
+    <link rel="stylesheet" href="reservation-materiel.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Etablissement Scolaire</h1>
+        <div class="user-info">
+            <div class="user-avatar"></div>
+            <span>Nom enseignant</span>
+            <button onclick="logout()" class="logout-btn">Déconnexion</button>
+        </div>
+    </header>
+
+    <section class="welcome-section">
+        <div class="welcome-header">
+            <button onclick="retourAccueil()" class="back-button">← Retour</button>
+            <div class="welcome-content">
+                <h2>Réserver du matériel pédagogique</h2>
+                <p>Réservez ordinateurs et vidéoprojecteurs pour vos cours</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <!-- Étape 1: Critères de consultation -->
+        <div class="step-section" id="step1">
+            <div class="step-card">
+                <div class="step-header">
+                    <h3><span class="step-number">1</span>Période de consultation</h3>
+                    <p>Définissez la période pour laquelle vous souhaitez du matériel</p>
+                </div>
+                
+                <div class="search-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dateReservation">Date :</label>
+                            <input type="text" id="dateReservation" placeholder="jj/mm/aaaa" maxlength="10" required>
+                            <span class="field-help">Format : jj/mm/aaaa</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="heureDebut">Heure de début :</label>
+                            <input type="text" id="heureDebut" placeholder="HH:mm" maxlength="5" required>
+                            <span class="field-help">Format : HH:mm (ex: 08:00)</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="heureFin">Heure de fin :</label>
+                            <input type="text" id="heureFin" placeholder="HH:mm" maxlength="5" required>
+                            <span class="field-help">Format : HH:mm (ex: 10:00)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="search-button" onclick="consulterDisponibilite()">
+                    <span class="button-text">Consulter la disponibilité</span>
+                    <div class="loading-spinner" id="loadingSpinner1"></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Étape 2: Sélection du matériel -->
+        <div class="step-section" id="step2" style="display: none;">
+            <div class="step-card">
+                <div class="step-header">
+                    <h3><span class="step-number">2</span>Sélection du matériel</h3>
+                    <p id="periodeInfo">Choisissez le matériel dont vous avez besoin</p>
+                </div>
+                
+                <div class="materiel-grid" id="materielGrid">
+                    <!-- Les cartes de matériel seront ajoutées dynamiquement -->
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="secondary-button" onclick="retourConsultation()">
+                        ← Modifier la période
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Étape 3: Confirmation -->
+        <div class="step-section" id="step3" style="display: none;">
+            <div class="step-card">
+                <div class="step-header">
+                    <h3><span class="step-number">3</span>Confirmation de réservation</h3>
+                    <p>Vérifiez les détails avant de confirmer</p>
+                </div>
+                
+                <div class="confirmation-details" id="confirmationDetails">
+                    <!-- Les détails seront ajoutés dynamiquement -->
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="secondary-button" onclick="retourSelection()">
+                        ← Changer de matériel
+                    </button>
+                    <button class="confirm-button" onclick="confirmerReservation()">
+                        <span class="button-text">Confirmer la réservation</span>
+                        <div class="loading-spinner" id="loadingSpinner3"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section de succès -->
+        <div class="step-section" id="success" style="display: none;">
+            <div class="success-card">
+                <div class="success-icon">✅</div>
+                <h3>Réservation confirmée !</h3>
+                <div class="success-details" id="successDetails">
+                    <!-- Les détails seront ajoutés dynamiquement -->
+                </div>
+                
+                <div class="info-note">
+                    <div class="info-icon">ℹ️</div>
+                    <p>Un responsable se chargera de déposer le matériel dans votre salle réservée.</p>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="primary-button" onclick="nouvelleReservation()">
+                        Nouvelle réservation
+                    </button>
+                    <button class="secondary-button" onclick="retourAccueil()">
+                        Retour à l'accueil
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section pas de salle réservée -->
+        <div class="step-section" id="pasDeSalle" style="display: none;">
+            <div class="error-card">
+                <div class="error-icon">🏛️</div>
+                <h3>Aucune salle réservée</h3>
+                <p>Vous devez d'abord réserver une salle pour cette période avant de pouvoir réserver du matériel.</p>
+                
+                <div class="suggestions">
+                    <h4>Pour réserver du matériel :</h4>
+                    <ol>
+                        <li>Réservez d'abord une salle pour la période souhaitée</li>
+                        <li>Revenez ensuite réserver votre matériel</li>
+                        <li>Le matériel sera déposé dans votre salle réservée</li>
+                    </ol>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="primary-button" onclick="allerReserverSalle()">
+                        Réserver une salle
+                    </button>
+                    <button class="secondary-button" onclick="retourConsultation()">
+                        ← Modifier la période
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section aucun matériel -->
+        <div class="step-section" id="aucunMateriel" style="display: none;">
+            <div class="no-results-card">
+                <div class="no-results-icon">📦</div>
+                <h3>Aucun matériel disponible</h3>
+                <p id="aucunMaterielMessage">Aucun matériel n'est disponible pour cette période.</p>
+                
+                <div class="suggestions">
+                    <h4>Suggestions :</h4>
+                    <ul>
+                        <li>Essayez une autre période</li>
+                        <li>Vérifiez la disponibilité à d'autres créneaux</li>
+                        <li>Contactez l'administration pour plus d'informations</li>
+                    </ul>
+                </div>
+                
+                <button class="primary-button" onclick="retourConsultation()">
+                    ← Modifier la période
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script src="reservation-materiel.js"></script>
+</body>
+</html>

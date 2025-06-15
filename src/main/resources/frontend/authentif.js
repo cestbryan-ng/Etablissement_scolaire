@@ -52,7 +52,7 @@ function showMessage(message, type) {
 
 // Fonction pour consulter le planning étudiant
 function consulterPlanningEtudiant() {
-    window.location.href = '/planning-salle.html';
+    window.location.href = '/planning-etudiant.html';  
 }
 
 // Validation email
